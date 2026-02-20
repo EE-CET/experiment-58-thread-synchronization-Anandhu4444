@@ -1,51 +1,31 @@
-class Table {
+import java.util.Scanner;
 
-    synchronized void printTable(int n) {
-        for (int i = 1; i <= 5; i++) {
-            System.out.print(n * i);
-            System.out.print(" ");
+public class MultipleCatch {
+
+    public static void main(String args[]){
+        System.out.println("enter N:");
+        Scanner sc=new Scanner(System.in);
+        int n=sc.nextInt();
+        int[] arr = new int[n];
+
+        for(int i=0;i<n;i++){
+            System.out.println("enter the element:");
+            arr[i]=sc.nextInt();
         }
-        System.out.println();
-    }
-}
 
-class MyThread1 extends Thread {
-    Table t;
+        System.out.println("enter the index to divide:");
+        int index=sc.nextInt();
+        System.out.println("enter the divisor:");
+        int div=sc.nextInt();
 
-    MyThread1(Table t) {
-        this.t = t;
-    }
-
-    public void run() {
-        t.printTable(5);
-    }
-}
-
-class MyThread2 extends Thread {
-    Table t;
-
-    MyThread2(Table t) {
-        this.t = t;
-    }
-
-    public void run() {
-        t.printTable(100);
-    }
-}
-
-public class SynchronizationDemo {
-
-    public static void main(String[] args) throws InterruptedException {
-
-        Table obj = new Table();
-
-        MyThread1 t1 = new MyThread1(obj);
-        MyThread2 t2 = new MyThread2(obj);
-
-        t1.start();
-        t1.join();
-
-        t2.start();
-        t2.join();
+        try{
+            System.out.println(arr[index]/div);
+        }
+        catch(ArrayIndexOutOfBoundsException e){
+            System.out.println("Invalid Index");
+        }
+        catch(ArithmeticException e){
+            System.out.println("Divide by zero error");
+        }
     }
 }
