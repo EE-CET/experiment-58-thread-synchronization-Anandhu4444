@@ -1,31 +1,36 @@
-import java.util.Scanner;
-
-public class MultipleCatch {
-
-    public static void main(String args[]){
-        System.out.println("enter N:");
-        Scanner sc=new Scanner(System.in);
-        int n=sc.nextInt();
-        int[] arr = new int[n];
-
-        for(int i=0;i<n;i++){
-            System.out.println("enter the element:");
-            arr[i]=sc.nextInt();
+class Table {
+    synchronized void printTable(int n) {
+        for (int i = 1; i <= 5; i++) {
+            System.out.print(n * i);
+            if (i != 5) System.out.print(" ");
         }
+        if (n == 5) {
+            System.out.print(" \n"); // space after 25, then newline
+        }
+    }
+}
 
-        System.out.println("enter the index to divide:");
-        int index=sc.nextInt();
-        System.out.println("enter the divisor:");
-        int div=sc.nextInt();
+class MyThread1 extends Thread {
+    Table t;
+    MyThread1(Table t) { this.t = t; }
+    public void run() { t.printTable(5); }
+}
 
-        try{
-            System.out.println(arr[index]/div);
-        }
-        catch(ArrayIndexOutOfBoundsException e){
-            System.out.println("Invalid Index");
-        }
-        catch(ArithmeticException e){
-            System.out.println("Divide by zero error");
-        }
+class MyThread2 extends Thread {
+    Table t;
+    MyThread2(Table t) { this.t = t; }
+    public void run() { t.printTable(100); }
+}
+
+public class SynchronizationDemo {
+    public static void main(String[] args) throws InterruptedException {
+        Table t = new Table();
+        MyThread1 t1 = new MyThread1(t);
+        MyThread2 t2 = new MyThread2(t);
+
+        t1.start();
+        t1.join();   // table of 5 finishes first
+        t2.start();
+        t2.join();   // then table of 100
     }
 }
